@@ -3,9 +3,12 @@ package com.gfsoftware.orangex.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gfsoftware.orangex.entities.TweetLike;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,6 +48,14 @@ public class User implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "id.user")
+	private Set<TweetLike> likes = new HashSet<>();
+	
+	public Set<TweetLike> getLikes(){
+		return likes;
+	}
 	
 	public User() {
 	}

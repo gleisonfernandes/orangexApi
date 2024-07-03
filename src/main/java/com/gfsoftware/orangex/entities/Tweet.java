@@ -3,10 +3,14 @@ package com.gfsoftware.orangex.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.gfsoftware.orangex.entities.TweetLike;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,8 +31,6 @@ public class Tweet implements Serializable {
 	private Long id;
     private LocalDate date;
     private String description;
-    private Integer likes;
-    private Integer retweets;
     private String profileimage;
     
     @ManyToOne
@@ -39,16 +41,22 @@ public class Tweet implements Serializable {
 	@OneToMany(mappedBy = "tweet")
     @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
+	
+	@JsonIgnore
+    @OneToMany(mappedBy = "id.tweet")
+	private Set<TweetLike> likes = new HashSet<>();
+    
+    public Set<TweetLike> getLikes(){
+		return likes;
+	}
     
 	public Tweet() {
 	}
 
-	public Tweet(Long id, LocalDate date, String description, Integer likes, Integer retweets, String profileimage, User user) {
+	public Tweet(Long id, LocalDate date, String description, String profileimage, User user) {
 		this.id = id;
 		this.date = date;
 		this.description = description;
-		this.likes = likes;
-		this.retweets = retweets;
 		this.profileimage = profileimage;
 		this.user = user;
 	}
@@ -75,22 +83,6 @@ public class Tweet implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getLikes() {
-		return likes;
-	}
-
-	public void setLikes(Integer likes) {
-		this.likes = likes;
-	}
-
-	public Integer getRetweets() {
-		return retweets;
-	}
-
-	public void setRetweets(Integer retweets) {
-		this.retweets = retweets;
 	}
 
 	public String getProfileimage() {
