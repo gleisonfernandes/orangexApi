@@ -14,6 +14,7 @@ import com.gfsoftware.orangex.entities.Comment;
 import com.gfsoftware.orangex.entities.Tweet;
 import com.gfsoftware.orangex.entities.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,19 +39,26 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(name = "email", unique = true)
 	private String email;
 	private String password;
 	private String name;
+	@Column(name = "nickname", unique = true)
 	private String nickname;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'Z'", timezone = "GMT")
 	private LocalDate dateofbirth;
+	@Column(columnDefinition = "TEXT")
 	private String profileImage;
+	@Column(columnDefinition = "TEXT")
 	private String coverImage;
-	private LocalDate joined;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'Z'", timezone = "GMT")
+	private LocalDate createdAt;
 	private String bio;
 	private String city;
 	private String site;
 	private Integer following;
 	private Integer followers;
+	private String roles;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")

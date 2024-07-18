@@ -14,7 +14,9 @@ import com.gfsoftware.orangex.entities.Tweet;
 import com.gfsoftware.orangex.entities.TweetLike;
 import com.gfsoftware.orangex.entities.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,10 +41,13 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	private String description;
-    private Date createdAt;
+	@Column(columnDefinition = "TEXT")
+    private String image;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'Z'", timezone = "GMT")
+    private LocalDate createdAt;
     
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tweet_id")
     @JsonBackReference
     private Tweet tweet;
